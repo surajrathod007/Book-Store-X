@@ -20,8 +20,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
-
+        putLayout(R.layout.activity_main)
+        setToolBarTitle("Home")
         if(myPrefs.getUserLoginStatus()){
             startActivity(Intent(this,HomeActivity::class.java))
         }else{

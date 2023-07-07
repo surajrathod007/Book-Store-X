@@ -1,6 +1,10 @@
 package com.surajrathod.bookstore
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import android.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
@@ -9,10 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 abstract class BaseActivity : AppCompatActivity() {
 
     lateinit var toolbar: Toolbar
-
+    lateinit var template : FrameLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.activity_base)
     }
 
     public fun showToast(msg : String,long : Boolean = false){
@@ -23,6 +28,19 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+
+    fun putLayout(id : Int){
+        template = findViewById<FrameLayout>(R.id.contentFrame)
+        template.addView(getViewFromLayout(id),0)
+    }
+
+    fun setToolBarTitle(title : String){
+        toolbar = findViewById(R.id.toolbar)
+        toolbar.title = title
+    }
+    fun getViewFromLayout(id : Int) : View{
+        return layoutInflater.inflate(id,null,false)
+    }
     fun showAlert( message : String,button_title : String = "Okay", isCancellable : Boolean = true,
                    showCancel : Boolean = true, sucessBlock : () -> Unit) {
         try {
