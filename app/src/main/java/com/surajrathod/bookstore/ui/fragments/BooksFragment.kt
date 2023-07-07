@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.adapter.ProductsAdapter
 import com.surajrathod.bookstore.databinding.FragmentBooksBinding
+import com.surajrathod.bookstore.ui.activities.HomeActivity
 import com.surajrathod.bookstore.viewmodel.BooksViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +43,13 @@ class BooksFragment : Fragment() {
     private fun setupObservers() {
         vm.products.observe(viewLifecycleOwner) {
             bindings.rvBooks.adapter = ProductsAdapter(it,findNavController())
+        }
+        vm.loading.observe(viewLifecycleOwner){
+            if(it){
+                (activity as HomeActivity).showProgress()
+            }else{
+                (activity as HomeActivity).hideProgress()
+            }
         }
     }
 

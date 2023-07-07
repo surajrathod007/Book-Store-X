@@ -16,10 +16,13 @@ class BooksViewModel @Inject constructor(private val networkService: NetworkServ
     private val _products = MutableLiveData<Products>()
     val products : LiveData<Products> get() = _products
 
+    var loading = MutableLiveData(false)
     fun loadProducts(){
+        loading.postValue(true)
         viewModelScope.launch {
             val r = networkService.loadProducts()
             _products.postValue(r)
+            loading.postValue(false)
         }
     }
 }

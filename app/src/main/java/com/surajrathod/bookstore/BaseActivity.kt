@@ -1,5 +1,6 @@
 package com.surajrathod.bookstore
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     lateinit var toolbar: Toolbar
     lateinit var template : FrameLayout
+    lateinit var loading : ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,6 +30,17 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun showProgress(){
+        loading = ProgressDialog(this)
+        loading.setTitle("Loading")
+        loading.show()
+    }
+
+    fun hideProgress(){
+        if(this::loading.isInitialized && loading.isShowing){
+            loading.dismiss()
+        }
+    }
 
     fun putLayout(id : Int){
         template = findViewById<FrameLayout>(R.id.contentFrame)
