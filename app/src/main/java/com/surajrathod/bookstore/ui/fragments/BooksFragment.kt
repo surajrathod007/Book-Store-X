@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.adapter.ProductsAdapter
 import com.surajrathod.bookstore.databinding.FragmentBooksBinding
@@ -34,12 +35,13 @@ class BooksFragment : Fragment() {
         vm = ViewModelProvider(this).get(BooksViewModel::class.java)
         loadProducts()
         setupObservers()
+
         return view
     }
 
     private fun setupObservers() {
         vm.products.observe(viewLifecycleOwner) {
-            bindings.rvBooks.adapter = ProductsAdapter(it)
+            bindings.rvBooks.adapter = ProductsAdapter(it,findNavController())
         }
     }
 

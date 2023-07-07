@@ -18,5 +18,10 @@
         android:id="@+id/blankDetailsFragment"
         android:name="com.surajrathod.bookstore.ui.fragments.BlankDetailsFragment"
         android:label="fragment_blank_details"
-        tools:layout="@layout/fragment_blank_details" />
+        tools:layout="@layout/fragment_blank_details" >
+
+        <argument
+            android:name="product"
+            app:argType="com.surajrathod.bookstore.model.ProductItem" />
+    </fragment>
 </navigation>

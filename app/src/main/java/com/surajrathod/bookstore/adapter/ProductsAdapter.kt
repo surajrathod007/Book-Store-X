@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.databinding.ProductItemLayoutBinding
 import com.surajrathod.bookstore.model.Products
+import com.surajrathod.bookstore.ui.fragments.BooksFragmentDirections
 
 class ProductsAdapter(val products: Products , val navController: NavController? = null) :
     RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
@@ -38,9 +39,11 @@ class ProductsAdapter(val products: Products , val navController: NavController?
         with(holder) {
             txtProductTitle.text = p.title
             Glide.with(holder.imgProduct.context).load(p.image).into(imgProduct)
+
             itemView.setOnClickListener {
+                val action = BooksFragmentDirections.actionBooksFragmentToBlankDetailsFragment(p)
                 if(navController!=null){
-                    navController.navigate(R.id.action_booksFragment_to_blankDetailsFragment)
+                    navController.navigate(action)
                 }
             }
         }
