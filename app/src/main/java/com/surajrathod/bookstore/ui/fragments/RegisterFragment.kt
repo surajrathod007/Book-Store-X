@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.surajrathod.bookstore.MainActivity
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.databinding.FragmentRegisterBinding
 
@@ -27,7 +28,14 @@ class RegisterFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
+        setupToolBar()
         return binding.root
+    }
+
+    private fun setupToolBar() {
+        with(activity as MainActivity){
+            setToolBarTitle("Register")
+        }
     }
 
 

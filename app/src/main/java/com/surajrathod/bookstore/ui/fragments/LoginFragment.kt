@@ -55,7 +55,14 @@ class LoginFragment : Fragment() {
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
         }
+        setupToolBar()
         return binding.root
+    }
+
+    private fun setupToolBar() {
+        with(activity as MainActivity){
+            setToolBarTitle("Login")
+        }
     }
 
 }

@@ -36,7 +36,8 @@ class BooksFragment : Fragment() {
         vm = ViewModelProvider(this).get(BooksViewModel::class.java)
         loadProducts()
         setupObservers()
-
+        (activity as HomeActivity).setToolBarTitle("Products")
+        (activity as HomeActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         return view
     }
 

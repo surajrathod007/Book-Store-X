@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    lateinit var toolbar: Toolbar
+    lateinit var toolbar: androidx.appcompat.widget.Toolbar
     lateinit var template : FrameLayout
     lateinit var loading : ProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +50,8 @@ abstract class BaseActivity : AppCompatActivity() {
     fun setToolBarTitle(title : String){
         toolbar = findViewById(R.id.toolbar)
         toolbar.title = title
+        toolbar.setTitleTextColor(resources.getColor(R.color.white))
+        setSupportActionBar(toolbar)
     }
     fun getViewFromLayout(id : Int) : View{
         return layoutInflater.inflate(id,null,false)

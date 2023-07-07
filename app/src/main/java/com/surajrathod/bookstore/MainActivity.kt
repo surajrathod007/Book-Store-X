@@ -13,7 +13,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
-
     @Inject
     lateinit var myPrefs : DummyPreferenceHelper
 
@@ -24,6 +23,7 @@ class MainActivity : BaseActivity() {
         setToolBarTitle("Home")
         if(myPrefs.getUserLoginStatus()){
             startActivity(Intent(this,HomeActivity::class.java))
+            finish()
         }else{
             showToast("Please Login",true)
         }
