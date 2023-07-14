@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.surajrathod.bookstore.BaseActivity
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.adapter.ProductsAdapter
 import com.surajrathod.bookstore.databinding.FragmentBooksBinding
 import com.surajrathod.bookstore.ui.activities.HomeActivity
+import com.surajrathod.bookstore.utils.Result
 import com.surajrathod.bookstore.viewmodel.BooksViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -43,7 +46,20 @@ class BooksFragment : Fragment() {
 
     private fun setupObservers() {
         vm.products.observe(viewLifecycleOwner) {
-            bindings.rvBooks.adapter = ProductsAdapter(it,findNavController())
+            when(it){
+                is Result.Success->{
+                    bindings.rvBooks.adapter = ProductsAdapter(it.data!!,findNavController())
+                }
+                is Result.Failure->{
+                    val error = it.exception
+                    if(error is IOException){
+                        //load local data.
+                    }
+                }
+                is Result.Loading->{
+
+                }
+            }
         }
         vm.loading.observe(viewLifecycleOwner){
             if(it){
