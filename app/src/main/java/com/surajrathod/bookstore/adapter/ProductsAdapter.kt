@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.databinding.ProductItemLayoutBinding
+import com.surajrathod.bookstore.model.ProductItem
 import com.surajrathod.bookstore.model.Products
 import com.surajrathod.bookstore.ui.fragments.BooksFragmentDirections
 
-class ProductsAdapter(val products: Products , val navController: NavController? = null) :
+class ProductsAdapter(val products: List<ProductItem> , val navController: NavController? = null) :
     RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
 
     class ProductsViewHolder(val binding: ProductItemLayoutBinding) : ViewHolder(binding.root) {

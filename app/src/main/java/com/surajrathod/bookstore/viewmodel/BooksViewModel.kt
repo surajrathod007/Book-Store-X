@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.surajrathod.bookstore.model.ProductItem
 import com.surajrathod.bookstore.model.Products
 import com.surajrathod.bookstore.network.NetworkService
 import com.surajrathod.bookstore.utils.Result
@@ -16,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BooksViewModel @Inject constructor(private val networkService: NetworkService) : ViewModel() {
 
-    private val _products = MutableLiveData<Result<Products>>()
-    val products : LiveData<Result<Products>> get() = _products
+    private val _products = MutableLiveData<Result<List<ProductItem>>>()
+    val products : LiveData<Result<List<ProductItem>>> get() = _products
     var loading = MutableLiveData(false)
 
     fun loadProducts(){
