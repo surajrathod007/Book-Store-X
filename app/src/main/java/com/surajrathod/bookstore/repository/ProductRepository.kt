@@ -1,5 +1,6 @@
 package com.surajrathod.bookstore.repository
 
+import androidx.lifecycle.LiveData
 import com.surajrathod.bookstore.model.ProductItem
 import com.surajrathod.bookstore.model.Products
 import com.surajrathod.bookstore.network.NetworkService
@@ -16,7 +17,12 @@ class ProductRepository @Inject constructor(
     private val db: ProductDao
 ) {
 
-    suspend fun fetchProducts(): Result<List<ProductItem>> {
+
+    suspend fun fetchLocalProducts(): List<ProductEntity> {
+        return db.getAllProducts()
+    }
+
+    suspend fun fetchProducts(): List<ProductEntity> {
 
         try {
             val r = networkService.loadProducts()
@@ -27,13 +33,16 @@ class ProductRepository @Inject constructor(
                     image = it.image,
                     rating = it.rating,
                     price = it.price,
-                    title = it.title
+                    title = it.title, id = 0
                 )
             }
-            db.insertProducts(productEntities)
-            return Result.Success(r)
-        } catch (e: HttpException) {
-            val d = db.getAllProducts().value
+            val count = db.countProducts()
+            if (count < productEntities.size)
+                db.insertProducts(productEntities)
+
+            return db.getAllProducts()
+        } catch (e: Exception) {
+            /*
             if (!d.isNullOrEmpty()) {
                 val data = d.map {
                     ProductItem(
@@ -47,25 +56,12 @@ class ProductRepository @Inject constructor(
                 }
                 return Result.Success(data)
             }else{
-                return Result.Failure("Can not load data from room",e)
+                return Result.Failure("Can not load data from room ${e.localizedMessage}",e)
             }
-        } catch (e: IOException) {
-            val d = db.getAllProducts().value
-            if (!d.isNullOrEmpty()) {
-                val data = d.map {
-                    ProductItem(
-                        category = it.category,
-                        description = it.description,
-                        id = it.id,
-                        image = it.image,
-                        price = it.price, rating = it.rating,
-                        title = it.title
-                    )
-                }
-                return Result.Success(data)
-            }else{
-                return Result.Failure("Can not load data from room IO Exception",e)
-            }
+
+             */
+            return  db.getAllProducts()
         }
+
     }
 }

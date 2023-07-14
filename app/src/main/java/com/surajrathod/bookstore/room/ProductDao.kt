@@ -10,10 +10,12 @@ import androidx.room.Query
 interface ProductDao {
 
     @Query("select * from products_table")
-    fun getAllProducts() : LiveData<List<ProductEntity>>
+    fun getAllProducts() : List<ProductEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(product : List<ProductEntity>)
 
+    @Query("select count(id) from products_table")
+    fun countProducts() : Int
 
 }

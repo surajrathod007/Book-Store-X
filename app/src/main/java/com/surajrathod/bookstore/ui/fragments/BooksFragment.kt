@@ -51,10 +51,7 @@ class BooksFragment : Fragment() {
                     bindings.rvBooks.adapter = ProductsAdapter(it.data!!,findNavController())
                 }
                 is Result.Failure->{
-                    val error = it.exception
-                    if(error is IOException){
-                        //load local data.
-                    }
+                    Toast.makeText(requireContext(),it.msg,Toast.LENGTH_LONG).show()
                 }
                 is Result.Loading->{
 
@@ -67,6 +64,15 @@ class BooksFragment : Fragment() {
             }else{
                 (activity as HomeActivity).hideProgress()
             }
+        }
+//        vm._localProducts.observe(viewLifecycleOwner){
+//            (activity as BaseActivity).showToast("${it?.get(0)?.toString()}",true)
+//        }
+        vm.msg.observe(viewLifecycleOwner){
+            (activity as BaseActivity).showToast("$it",true)
+        }
+        vm._localProducts.observe(viewLifecycleOwner){
+            (activity as BaseActivity).showToast("${it?.get(0)?.toString()}",true)
         }
     }
 
