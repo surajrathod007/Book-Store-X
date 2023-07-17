@@ -43,10 +43,9 @@ class ProductsAdapter(val products: List<ProductItem> , val navController: NavCo
 
             itemView.setOnClickListener {
                 val action = BooksFragmentDirections.actionBooksFragmentToBlankDetailsFragment(p)
-                if(navController!=null){
-                    navController.navigate(action)
-                }
+                navController?.navigate(action)
             }
         }
     }
+
 }

@@ -27,7 +27,7 @@ class ProductRepository @Inject constructor(
     private val mainDb : ProductsDatabase
 ) {
 
-    private fun toProductEntity(p: ProductItem): ProductEntity {
+    fun toProductEntity(p: ProductItem): ProductEntity {
         return ProductEntity(
             category = p.category,
             description = p.description,
@@ -39,6 +39,17 @@ class ProductRepository @Inject constructor(
         )
     }
 
+     fun toProductItem(p:ProductEntity) : ProductItem{
+        return ProductItem(
+            category = p.category,
+            description = p.description,
+            id = p.id,
+            image = p.image,
+            rating = p.rating,
+            title = p.title,
+            price = p.price
+        )
+    }
     fun getAllProducts() = networkBoundResource(
         query = {
             db.fetchAllProducts()

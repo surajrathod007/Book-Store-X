@@ -5,9 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.surajrathod.bookstore.model.ProductItem
 import com.surajrathod.bookstore.model.Products
 import com.surajrathod.bookstore.network.NetworkService
+import com.surajrathod.bookstore.paging.ProductsPagingSource
 import com.surajrathod.bookstore.repository.ProductRepository
 import com.surajrathod.bookstore.room.ProductEntity
 import com.surajrathod.bookstore.utils.Result
@@ -32,7 +37,12 @@ class BooksViewModel @Inject constructor(private val repository: ProductReposito
 
     val msg = MutableLiveData<String>()
 
-    private fun toProductItem(p:ProductEntity) : ProductItem{
+    fun getPagedProducts() =
+        Pager(config = PagingConfig(pageSize = 20, maxSize = 100), pagingSourceFactory = {
+            ProductsPagingSource(repository)
+        }).liveData.cachedIn(viewModelScope)
+
+    private fun toProductItem(p: ProductEntity): ProductItem {
         return ProductItem(
             category = p.category,
             description = p.description,
@@ -43,6 +53,7 @@ class BooksViewModel @Inject constructor(private val repository: ProductReposito
             price = p.price
         )
     }
+
     fun loadProducts() {
         loading.postValue(true)
         CoroutineScope(Dispatchers.IO).launch {

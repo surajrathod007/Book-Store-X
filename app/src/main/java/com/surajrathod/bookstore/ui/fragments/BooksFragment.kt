@@ -14,11 +14,15 @@ import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.adapter.ProductsAdapter
 import com.surajrathod.bookstore.databinding.FragmentBooksBinding
 import com.surajrathod.bookstore.model.ProductItem
+import com.surajrathod.bookstore.paging.ProductPagedAdapter
 import com.surajrathod.bookstore.room.ProductEntity
 import com.surajrathod.bookstore.ui.activities.HomeActivity
 import com.surajrathod.bookstore.utils.Result
 import com.surajrathod.bookstore.viewmodel.BooksViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 
@@ -47,7 +51,10 @@ class BooksFragment : Fragment() {
         return view
     }
 
+
+
     private fun setupObservers() {
+
         vm.myProducts.observe(viewLifecycleOwner) {
             if (it is Result.Failure) {
                 Log.d("SURAJ", it.msg.toString())
