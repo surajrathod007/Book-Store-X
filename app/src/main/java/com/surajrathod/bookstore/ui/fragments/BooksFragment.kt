@@ -1,6 +1,7 @@
 package com.surajrathod.bookstore.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import com.surajrathod.bookstore.BaseActivity
 import com.surajrathod.bookstore.R
 import com.surajrathod.bookstore.adapter.ProductsAdapter
 import com.surajrathod.bookstore.databinding.FragmentBooksBinding
+import com.surajrathod.bookstore.model.ProductItem
+import com.surajrathod.bookstore.room.ProductEntity
 import com.surajrathod.bookstore.ui.activities.HomeActivity
 import com.surajrathod.bookstore.utils.Result
 import com.surajrathod.bookstore.viewmodel.BooksViewModel
@@ -45,39 +48,68 @@ class BooksFragment : Fragment() {
     }
 
     private fun setupObservers() {
+        vm.myProducts.observe(viewLifecycleOwner) {
+            if (it is Result.Failure) {
+                Log.d("SURAJ", it.msg.toString())
+                Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
+                vm.loading.postValue(false)
+            } else if (it is Result.Loading) {
+                vm.loading.postValue(true)
+            } else if (it is Result.Success) {
+                //Toast.makeText(requireContext(),it.data.toString(),Toast.LENGTH_LONG).show()
+                bindings.rvBooks.adapter = ProductsAdapter(it.data!!.map {
+                    toProductItem(it)
+                }, findNavController())
+                vm.loading.postValue(false)
+            }
+        }
         vm.products.observe(viewLifecycleOwner) {
-            when(it){
-                is Result.Success->{
-                    bindings.rvBooks.adapter = ProductsAdapter(it.data!!,findNavController())
+            when (it) {
+                is Result.Success -> {
+                    //bindings.rvBooks.adapter = ProductsAdapter(it.data!!,findNavController())
                 }
-                is Result.Failure->{
-                    Toast.makeText(requireContext(),it.msg,Toast.LENGTH_LONG).show()
+
+                is Result.Failure -> {
+                    //Toast.makeText(requireContext(),it.msg,Toast.LENGTH_LONG).show()
                 }
-                is Result.Loading->{
+
+                is Result.Loading -> {
 
                 }
             }
         }
-        vm.loading.observe(viewLifecycleOwner){
-            if(it){
+        vm.loading.observe(viewLifecycleOwner) {
+            if (it) {
                 (activity as HomeActivity).showProgress()
-            }else{
+            } else {
                 (activity as HomeActivity).hideProgress()
             }
         }
 //        vm._localProducts.observe(viewLifecycleOwner){
 //            (activity as BaseActivity).showToast("${it?.get(0)?.toString()}",true)
 //        }
-        vm.msg.observe(viewLifecycleOwner){
-            (activity as BaseActivity).showToast("$it",true)
+        vm.msg.observe(viewLifecycleOwner) {
+            (activity as BaseActivity).showToast("$it", true)
         }
-        vm._localProducts.observe(viewLifecycleOwner){
-            (activity as BaseActivity).showToast("${it?.get(0)?.toString()}",true)
+        vm._localProducts.observe(viewLifecycleOwner) {
+            (activity as BaseActivity).showToast("${it?.get(0)?.toString()}", true)
         }
     }
 
     private fun loadProducts() {
-        vm.loadProducts()
+        //vm.loadProducts()
+    }
+
+    private fun toProductItem(p: ProductEntity): ProductItem {
+        return ProductItem(
+            category = p.category,
+            description = p.description,
+            id = p.id,
+            image = p.image,
+            rating = p.rating,
+            title = p.title,
+            price = p.price
+        )
     }
 
 

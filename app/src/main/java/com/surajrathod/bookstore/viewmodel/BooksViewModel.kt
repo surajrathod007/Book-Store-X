@@ -3,6 +3,7 @@ package com.surajrathod.bookstore.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.surajrathod.bookstore.model.ProductItem
 import com.surajrathod.bookstore.model.Products
@@ -20,6 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BooksViewModel @Inject constructor(private val repository: ProductRepository) : ViewModel() {
+
+    val myProducts = repository.getAllProducts().asLiveData()
 
     private val _products = MutableLiveData<Result<List<ProductItem>>>()
     val products: LiveData<Result<List<ProductItem>>> get() = _products
