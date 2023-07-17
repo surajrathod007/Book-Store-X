@@ -90,6 +90,12 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
 
+    def paging_version = "3.1.1"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // alternatively - without Android dependencies for tests
+    testImplementation "androidx.paging:paging-common:$paging_version"
 
 }
 
